@@ -30,6 +30,7 @@ itsi-slack-alert/bin/README
 itsi-slack-alert/local
 itsi-slack-alert/local/app.conf
 ```
+Go to *Manage Apps*, search for *itsi-slack-alert*, click *Permissions* in the row, and set *Apply selected role permissions to:* *All apps (system)*. 
 ## Update the files to Use the Custom Alert
 - Copy *itsi_sample_slack_alert.py* to *$SPLUNK_HOME/etc/apps/itsi-slack-alert/bin/*.
 - Copy *itsi_sample_slack_alert.html* to *$SPLUNK_HOME/etc/apps/itsi-slack-alert/default/data/ui/alerts/*.
