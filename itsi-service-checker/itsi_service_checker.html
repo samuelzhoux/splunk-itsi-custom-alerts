@@ -4,12 +4,24 @@
             for="action.itsi_service_checker.param.service_url" style="width: 100px;padding-right: 10px;">Web Service URL
         <span class="required">*</span>
         </label>
-
         <div class="controls">
             <input type="text"
-            name="action.itsi_service_checker.param.serice_url" id="itsi_service_checker_id" value="http://localhost:8080/"/>
+            name="action.itsi_service_checker.param.service_url" id="itsi_service_checker_service_url" value="http://localhost:8080"/>
             <span class="help-block">
                 URL needed for GET request to your web service.
+            </span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label"
+            for="action.itsi_service_checker.param.email" style="width: 100px;padding-right: 10px;">Email
+        <span class="required">*</span>
+        </label>
+        <div class="controls">
+            <input type="text"
+            name="action.itsi_service_checker.param.email" id="itsi_service_checker_email" value=""/>
+            <span class="help-block">
+                The email address we will send alert on errors when checking.
             </span>
         </div>
     </div>

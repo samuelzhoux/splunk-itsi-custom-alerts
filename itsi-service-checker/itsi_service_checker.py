@@ -1,15 +1,17 @@
-# Make code compatible with both Python 2 and Python 3
-from future import standard_library
-standard_library.install_aliases()
-
 import sys
 import requests
+import splunk.rest as splunk_rest
 
 # Add path of ITSI Event Management SDK
 from splunk.clilib.bundle_paths import make_splunkhome_path
 sys.path.append(make_splunkhome_path(['etc', 'apps', 'SA-ITOA', 'lib']))
 
-# EventGroup represents a group of events
+# Make code compatible with both Python 2 and Python 3
+import itsi_path
+from itsi_py23 import _
+import itsi_py23
+
+# EventGroup is the object to manage episodes
 from itsi.event_management.sdk.grouping import EventGroup
 
 # CustomEventActionBase is a base class of actions which contains util functions
@@ -19,13 +21,18 @@ from itsi.event_management.sdk.custom_group_action_base import CustomGroupAction
 from ITOA.setup_logging import getLogger
 logger = getLogger(logger_name='itsi_service_checker')
 
+from splunk.util import safeURLQuote
+
 # A number is to present the status of an episode
 # 2 is in-progress, 5 is closed.
 STATUS_INPROGRESS, STATUS_CLOSED = ('2', '5')
 
 class ServiceChecker(CustomGroupActionBase):
-    # The name of service URL parameter configured in in alert_actions.conf
+    # The name of service URL parameter configured in alert_actions.conf
     SERVICE_URL_CONFIG_KEY = 'service_url'
+
+    # The name of email address parameter configured in alert_actions.conf
+    EMAIL_CONFIG_KEY = 'email'
 
     def __init__(self, settings):
         super(ServiceChecker, self).__init__(settings, logger)
@@ -42,9 +49,34 @@ class ServiceChecker(CustomGroupActionBase):
             logger.error('Failed to check service: %s' % e.message)
         return False
 
+    def send_email(self, group_ids, emailto, subject, message):
+        search_cmd = 'search index="itsi_grouped_alerts" itsi_group_id IN %s | sendemail "email" content_type="html" ' \
+                     'to="%s" subject="%s" server="localhost" message="%s" sendresults=true' \
+                     % (str(tuple(group_ids)).replace('\'', '"'), emailto, subject, message)
+        data = {
+            'earliestTime': '-24h',
+            'latestTime': 'now',
+            'search': search_cmd,
+            'exec_mode': 'oneshot',
+            'output_mode': 'json'
+        }
+        logger.info('Running search command: %s to send email' % search_cmd)
+        response, content = splunk_rest.simpleRequest(safeURLQuote('/servicesNS/nobody/%s/search/jobs/' %
+                                                                    self.settings.get('app')),
+                                                      sessionKey=self.get_session_key(),
+                                                      method='POST',
+                                                      postargs=data)
+        if 200 <= response.status < 300:
+            logger.info('sendemail command run successfully.')
+            return True
+        else:
+            logger.error('Failed to run sendemail')
+        return False
+
     def execute(self):
         try:
             service_url = self.get_config().get(self.SERVICE_URL_CONFIG_KEY, '')
+            email_addr = self.get_config().get(self.EMAIL_CONFIG_KEY, '')
 
             # The object to manage ITSI episodes
             itsi_episode = EventGroup(self.get_session_key(), logger)
@@ -81,6 +113,9 @@ class ServiceChecker(CustomGroupActionBase):
 
                 if groups_failed:
                     itsi_episode.update_status(groups_failed, STATUS_INPROGRESS)
+                    self.send_email(groups_failed, email_addr,
+                                    "%s Episodes Failed for Service Check" % len(groups_failed),
+                                    "See attachment for relevant events")
         except Exception as e:
             logger.error('Failed to check service: %s' % e.message)
             logger.exception(e)
@@ -91,3 +126,4 @@ if __name__ == "__main__":
         input_params = sys.stdin.read()
         serviceChecker = ServiceChecker(input_params)
         serviceChecker.execute()
+

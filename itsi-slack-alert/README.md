@@ -1,5 +1,5 @@
 # Create ITSI Custom Alert to Send Something to Slack
-The files refered in this README can be found in 
+The files refered in this README can be found in current folder.
 ## Create an Splunk App For Holding the Alert
 * Login Splunk in *App* drop down, go to *Manage Apps*, in the new page, click *Create App*
 * In the new page, set the following values:
