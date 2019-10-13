@@ -108,14 +108,14 @@ class ServiceChecker(CustomGroupActionBase):
                     itsi_episode.create_comment(group_id, 'Service check failed for `%s`, putting it in-progress.' %
                                                 group_title)
 
-                if groups_passed:
-                    itsi_episode.update_status(groups_passed, STATUS_CLOSED)
+            if groups_passed:
+                itsi_episode.update_status(groups_passed, STATUS_CLOSED)
 
-                if groups_failed:
-                    itsi_episode.update_status(groups_failed, STATUS_INPROGRESS)
-                    self.send_email(groups_failed, email_addr,
-                                    "%s Episodes Failed for Service Check" % len(groups_failed),
-                                    "See attachment for relevant events")
+            if groups_failed:
+                itsi_episode.update_status(groups_failed, STATUS_INPROGRESS)
+                self.send_email(groups_failed, email_addr,
+                                "%s Episodes Failed for Service Check" % len(groups_failed),
+                                "See attachment for relevant events")
         except Exception as e:
             logger.error('Failed to check service: %s' % e.message)
             logger.exception(e)
