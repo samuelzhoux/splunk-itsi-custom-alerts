@@ -10,6 +10,7 @@ This custom action will check web service, if the web service return 2XX respons
   - Author: *You_name_here*
   - Template: *barebones*
   - Upload asset: *optional*
+
 Now you will have *itsi-service-checker* created in $SPLUNK_HOME/etc/apps directory, here are the contents created:
 ```
 $ find itsi-service-checker/
