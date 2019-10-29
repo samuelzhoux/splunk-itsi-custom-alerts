@@ -12,7 +12,7 @@ Name |  ITSI Web Service Checker
 Folder name | itsi-service-checker
 Version | 1.0.0
 Visible | No
-Author | *<Your name>*
+Author | *Your name*
 Template | barebones
 Upload asset | *Optional. The asset list provides external information about the devices on your system, such as the asset priority, owner, and business unit.*
   
