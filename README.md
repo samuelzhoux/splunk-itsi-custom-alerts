@@ -5,4 +5,4 @@ See the README files in each individual folder for instructions on how to set up
 
 ## Official Documentation:
 * ITSI: https://docs.splunk.com/Documentation/ITSI/latest/Configure/Abouttheproduct
-* Event Management SDK: https://docs.splunk.com/Documentation/ITSI/latest/Configure/UsetheNotableEventActionSDK
+* Notable Event Actions SDK: https://docs.splunk.com/Documentation/ITSI/latest/Configure/UsetheNotableEventActionSDK
