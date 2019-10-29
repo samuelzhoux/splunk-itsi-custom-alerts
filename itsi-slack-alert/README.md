@@ -1,4 +1,4 @@
-# Create a custom alert to send something to Slack
+# Create a custom alert to send a message to Slack
 
 This custom alert action sends messages to Slack. The files referred to in this README exist in the `splunk-itsi-custom-alerts` repository.
 
