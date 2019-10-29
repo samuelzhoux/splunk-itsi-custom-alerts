@@ -1,8 +1,8 @@
-# Create a custom alert to send a message to Slack
+# Create a custom alert to send messages to Slack
 
-This custom alert action sends messages to Slack. The files referred to in this README exist in the `splunk-itsi-custom-alerts` repository.
+This custom alert action sends messages to Slack. The files referenced in this README file exist in the `splunk-itsi-custom-alerts` repository.
 
-## Create a Splunk app to hold the alert
+## Create a Splunk app to house the alert
 1. Log in to IT Service Intelligence (ITSI).
 1. In the **App** dropdown, click **Manage Apps**.
 1. Click **Create app**.
@@ -44,7 +44,7 @@ itsi-slack-alert/local/app.conf
 7. Click **Permissions**.
 8. Set **Apply selected role permissions** to **All apps (system)**.
 
-## Update the files to Use the Custom Alert
+## Update the files to use the custom alert
 1. Copy **itsi_sample_slack_alert.py** to `$SPLUNK_HOME/etc/apps/itsi-slack-alert/bin/`.
 1. Copy **itsi_sample_slack_alert.html** to `$SPLUNK_HOME/etc/apps/itsi-slack-alert/default/data/ui/alerts/`.
 1. Copy **alert_actions.conf** to `$SPLUNK_HOME/etc/apps/itsi-slack-alert/default/`.
